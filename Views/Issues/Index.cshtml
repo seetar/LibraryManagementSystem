@@ -1,0 +1,87 @@
+﻿@model IEnumerable<LibraryManagementSystem.Models.Issue>
+
+@{
+    ViewData["Title"] = "Issue/Return Book";
+}
+
+<h1>Issue/Return Book</h1>
+
+<form asp-action="Issue">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div id="notebar" hidden></div>
+    <div class="form-row">
+        <div class="col-md-3 form-group">
+            <label class="control-label">Member</label>
+            <select name="MemberId" class="form-control" asp-items="ViewBag.MemberId" required></select>
+        </div>
+        <div class="col-md-3 form-group">
+            <label class="control-label">Book</label>
+            <select name="BookId" class="form-control" asp-items="ViewBag.BookId" required></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Issue" class="btn btn-primary" />
+    </div>
+</form>
+
+<partial name="_SearchPartial" />
+
+<br />
+<div class="table-responsive-lg">
+    <table class="table table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Member)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Book)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Member.FirstName) @Html.DisplayFor(modelItem => item.Member.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Book.Name)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#confirmReturn" onclick="$('#selectedId').val('@item.IssueId')">Return</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<form class="form-inline" asp-action="Return" method="post">
+    <div id="confirmReturn" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Return Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to return this book?</p>
+                    <input type="hidden" id="selectedId" name="id" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-primary">Yes</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

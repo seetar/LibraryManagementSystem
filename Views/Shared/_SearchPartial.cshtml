@@ -1,0 +1,11 @@
+﻿<form asp-action="Index">
+    <div class="form-row">
+        <div class="col-md-3">
+            <input class="form-control" placeholder="Search..." type="text" name="searchTerm" value="@ViewData["currentFilter"]" />
+        </div>
+        <div class="col-md-9">
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </div>
+    </div>
+</form>
